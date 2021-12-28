@@ -1,0 +1,1 @@
+print("123456789 RAISA".startswith("12"))

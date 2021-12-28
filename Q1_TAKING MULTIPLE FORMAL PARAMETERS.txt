@@ -1,0 +1,22 @@
+
+-------------------------CAN TAKE ANY NO OF INPUTS---------------------
+
+
+
+
+
+
+
+def sum( *vartuple ):
+   total = 0
+   for var in vartuple:
+      total += var
+   return total
+
+
+
+------------------------------
+
+ACTUAL PARAMETER WILL BE LIKE
+
+sum(*alist)
