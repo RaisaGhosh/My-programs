@@ -2,8 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-int top=-1,max=100,x=0;
-char stack[100],a[100];
+int top=-1,max=20;
+char arr[20];
 
 void push(char n){
     if(top==(max-1)){
@@ -13,71 +13,27 @@ void push(char n){
     else
     {
         top++;
-        stack[top]=n;
+        arr[top]=n;
 
     }
 }
 
-char pop(){
-    char a;
+int pop(){
+    int a;
     if(top==-1){
         printf("\nStack underflow\n");
         return 0;
     }
     else
     {
-        a=stack[top];
+        a=arr[top];
         top--;
         return a;
     }
 }
 
-void add_sub(char c){
-    char n;
-    while(stack[top]=='*' || stack[top]=='/' || stack[top]=='%' || stack[top]== '+' || stack[top]== '-'){
-        n=pop();
-        a[x++]=n;
-    }
-    push(c);
-}
-
-void mul_div(char c){
-     char n;
-     while(stack[top]=='*' || stack[top]=='/' || stack[top]=='%'){
-        n=pop();
-        a[x++]=n;
-    }
-    push(c);
-}
-
-void brace(char c){
-    char q;
-    if(c=='('|| c=='{' || c=='['){
-        push(c);
-        return;
-    }
-    if(c==')'){
-        q=pop();
-        while(q!='('){
-            a[x++]=q;
-            q=pop();
-        }
-         
-    }
-    if(c=='}'){
-       q=pop();
-        while(q!='('){
-            a[x++]=q;
-            q=pop();
-        }
-    }
-    if(c==']'){
-        q=pop();
-        while(q!='('){
-            a[x++]=q;
-            q=pop();
-        }
-    }
+int peep(){
+    return arr[top];
 }
 
 void display(){
@@ -86,56 +42,101 @@ void display(){
         return;
     }
     int i;
-    printf("\nStack elements are : ");
+    printf("\nArray elements are : ");
     for(i=0;i<=top;i++){
-        printf("%c ",stack[i]);
+        printf("%c ",arr[i]);
     }
+    printf("\n");
 }
 
-void display1(){
-    int i;
-    printf("\nArray elements are : ");
-    for(i=0;i<strlen(a);i++){
-        printf("%c ",a[i]);
+void Bracket(char c){
+    char k;
+    if(c=='(' || c=='{' || c=='['){
+        push(c);
+        return;
     }
+    if(c==')'){
+        while((k=pop())!='('){
+            printf("%c",k);
+        }
+        return;
+    }
+    if(c=='}'){
+        while((k=pop())!='{'){
+            printf("%c",k);
+        }
+        return;
+    }
+    if(c==']'){
+        while((k=pop())!='['){
+            printf("%c",k);
+        }
+        return;
+    }
+    
+    
+}
+
+void Multiply(){
+    char k=peep();
+    while(k=='/' || k=='*'){
+            k=pop();
+            printf("%c",k);
+            k=peep();
+        }
+    push('*');
+}
+
+void Divide(){
+    char k=peep();
+    while(k=='/' || k=='*'){
+            k=pop();
+            printf("%c",k);
+            k=peep();
+        }
+    push('/');
+}
+
+void Add(){
+    char k=peep();
+    while(k=='/' || k=='*' || k=='+' || k=='-'){
+            k=pop();
+            printf("%c",k);
+            k=peep();
+        }
+    push('+');
+}
+
+void Subtract(){
+    char k=peep();
+    while(k=='/' || k=='*' || k=='+' || k=='-'){
+            k=pop();
+            printf("%c",k);
+            k=peep();
+        }
+    push('-');
 }
 
 int main(){
-    int i,s;
-    char e[100];
-    printf("Enter the expression\n");
-    gets(e);
-    s=strlen(e);
-   
-    for(i=0;i<s;i++){
-        if(e[i]== '+' || e[i]== '-'){
-        add_sub(e[i]);
-        // printf("aaaaaaaa\n");
-        }
-        else if(e[i]=='*' || e[i]=='/' || e[i]=='%' || e[i]=='+' || e[i]=='-'){
-                mul_div(e[i]);
-                // printf("bbbbbbbbb\n");
-        }
-             else if(e[i]=='(' || e[i]=='{' || e[i]=='[' ||e[i]==')' || e[i]=='}' || e[i]==']' ){
-                    brace(e[i]);
-                    // printf("ccccccccc\n");
-             }
-                  else{
-                    a[x++]=e[i];
-                    // printf("ddddddddd\n");
-                  }
-            // display();
-            // display1();
+    char a[200];
+    int l,i;
+    printf("Enter the in-fix expression : ");
+    gets(a);
+    l=strlen(a);
+    for(i=0;i<l;i++){
+        if(a[i]=='(' || a[i]==')' || a[i]=='{' || a[i]=='}' || a[i]=='[' || a[i]==']' )
+            Bracket(a[i]);
+        else if(a[i]=='*')
+            Multiply();
+        else if(a[i]=='/')
+            Divide();
+        else if(a[i]=='+')
+            Add();
+        else if(a[i]=='-')
+            Subtract();
+        else printf("%c",a[i]);
     }
-
     printf("\n");
-    printf("\n\nPostfix expression is : ");
-    for(i=0;i<s;i++){
-        printf("%c",a[i]);
-    }
-    while(top!=-1){
-        printf("%c",pop());
-    }    
-    printf("\n");
+    
     return 0;
 }
